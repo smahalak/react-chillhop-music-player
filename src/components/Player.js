@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPlayCircle,
   faArrowCircleRight,
   faArrowCircleLeft,
   faPauseCircle,
+  faVolumeUp,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Player = ({
@@ -17,6 +19,8 @@ const Player = ({
   setSongInfo,
   activeLibraryHandler,
 }) => {
+  const [volume, setVolume] = useState(0.8);
+
   const playSongHandler = () => {
     if (isPlaying) {
       audioRef.current.pause();
@@ -57,6 +61,11 @@ const Player = ({
     setSongInfo({ ...songInfo, currentTime: e.target.value });
   };
 
+  const volumeHandler = (e) => {
+    audioRef.current.volume = e;
+    setVolume(e);
+  };
+
   return (
     <div className="player-container">
       <div className="time-container">
@@ -88,6 +97,14 @@ const Player = ({
           icon={faArrowCircleRight}
           size="3x"
         />
+        <div className="volume-control">
+          <FontAwesomeIcon icon={faVolumeUp} size="2x" />
+          <input
+            value={Math.round(volume * 100)}
+            type="range"
+            onChange={(e) => volumeHandler(e.target.value / 100)}
+          />
+        </div>
       </div>
     </div>
   );
