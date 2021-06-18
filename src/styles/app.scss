@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Do Hyeon", sans-serif;
+  background: black;
+  color: white;
+  user-select: none;
+}
+
+@import "./nav";
+@import "./song";
+@import "./player";
+@import "./library";
