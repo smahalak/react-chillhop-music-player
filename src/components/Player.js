@@ -15,6 +15,7 @@ const Player = ({
   songs,
   currentSong,
   setSongInfo,
+  activeLibraryHandler,
 }) => {
   const playSongHandler = () => {
     if (isPlaying) {
@@ -36,10 +37,18 @@ const Player = ({
     let currentIndex = songs.findIndex((song) => song.id === currentSong.id);
     if (direction === "next-song") {
       await setCurrentSong(songs[currentIndex + 1] || songs[0]);
-    } else if (direction == "previous-song") {
-      await setCurrentSong(songs[currentIndex - 1] || songs[songs.length - 1]);
+      activeLibraryHandler(songs[currentIndex + 1] || songs[0]);
     }
-
+    if (direction === "previous-song") {
+      if ((currentIndex - 1) % songs.length === -1) {
+        await setCurrentSong(songs[songs.length - 1]);
+        activeLibraryHandler(songs[songs.length - 1]);
+        if (isPlaying) audioRef.current.play();
+        return;
+      }
+      await setCurrentSong(songs[currentIndex - 1] || songs[songs.length - 1]);
+      activeLibraryHandler(songs[currentIndex - 1] || songs[songs.length - 1]);
+    }
     if (isPlaying) audioRef.current.play();
   };
 
